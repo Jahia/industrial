@@ -99,6 +99,7 @@
  - image (weakreference) mandatory < 'jmix:image'
  - images (weakreference) multiple mandatory < 'jmix:image'
  - date (date) = now()
+ - relatedDocs (weakreference) multiple < 'jnt:file'
 
 [tint:lastContent] > jnt:content, jmix:list, mix:title, timix:industrial, jmix:cache
   - teaser (string, richtext[ckeditor.toolbar='Tinny',ckeditor.customConfig='$context/modules/industrial/javascript/ckeditor/config/small.js']) internationalized

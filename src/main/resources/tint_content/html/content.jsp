@@ -35,6 +35,8 @@
     <c:set var="imageURL" value="${imageNode.getUrl()}"/>
 </c:if>
 
+<c:set var="relatedDocs" value="${currentNode.properties['relatedDocs']}"/>
+
 <div class="inner-page">
     <div class="slider-item" style="background-image: url('${imageURL}');">
     </div>
@@ -68,4 +70,50 @@
             </div>
         </div>
     </div>
+    <c:if test="${not empty relatedDocs}">
+    <div class="container industrial-pdf-viewer">
+        <div class="row mt-5 p-5 ">
+            <div class="col-12">
+                <h2 style="margin-top: 2rem;"><fmt:message key="label.content.relatedDocs"/></h2>
+            </div>
+            <div class="col-lg-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <c:forEach items="${relatedDocs}" var="relatedDoc" varStatus="status">
+                        <c:set var="relatedDocNode" value="${relatedDoc.node}"/>
+                        <template:addCacheDependency node="${relatedDocNode}"/>
+                        <c:set var="title" value="${not empty relatedDocNode.properties['jcr:title'].string ? relatedDocNode.properties['jcr:title'].string : relatedDocNode.displayableName}" />
+                        <c:set var="active" value="${status.first ? 'active' : ''}"/>
+                        <a class="list-group-item list-group-item-action ${active}"
+                           id="relatedDoc-list-${status.index}-list"
+                           data-toggle="list"
+                           href="#relatedDoc-list-${status.index}"
+                           role="tab"
+                           aria-controls="related document ${status.index}">
+                                ${fn:escapeXml(title)}
+                        </a>
+                    </c:forEach>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="tab-content" id="nav-tabContent">
+                    <c:forEach items="${relatedDocs}" var="relatedDoc" varStatus="status">
+                        <c:set var="relatedDocNode" value="${relatedDoc.node}"/>
+                        <c:set var="active" value="${status.first ? 'active' : ''}"/>
+                        <div class="tab-pane fade show ${active}" id="relatedDoc-list-${status.index}" role="tabpanel"
+                             aria-labelledby="relatedDoc-list-${status.index}-list">
+                            <iframe
+                                    src="${relatedDocNode.getUrl()}"
+                                    webkitallowfullscreen
+                                    mozallowfullscreen
+                                    allowfullscreen
+                                    frameborder="0"
+                                    allowtransparency="true"
+                                    style="width:100%;min-height:500px">
+                            </iframe>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        </c:if>
 </section>
