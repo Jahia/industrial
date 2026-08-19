@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.jahia.se.modules</groupId>
   <artifactId>industrial</artifactId>
-  <version>5.0.2-SNAPSHOT</version>
+  <version>5.0.3-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Industrial</name>
   <description>This module is designed for marketers or communication team to create quickly and easily
