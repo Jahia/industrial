@@ -24,10 +24,8 @@
     <c:if test="${empty defaultWidth}">
         <c:set var="defaultWidth" value="${not empty currentResource.moduleParams.mediaWidth ? currentResource.moduleParams.mediaWidth : '750'}"/>
     </c:if>
-    <c:catch var="getUrlException">
-        <c:set var="imageURL" value="${imageNode.getUrl(['w:'.concat(defaultWidth)])}"/>
-    </c:catch>
-    <c:if test="${getUrlException != null || empty imageURL}">
+    <c:set var="imageURL" value="${imageNode.getUrl(['w:'.concat(defaultWidth)])}"/>
+    <c:if test="${empty imageURL}">
         <c:set var="imageURL" value="${baseURL}"/>
     </c:if>
 
@@ -44,10 +42,8 @@
             <picture>
                 <c:forEach items="${widths}" var="width" varStatus="status">
                     <c:if test="${not empty media[status.index]}">
-                        <c:catch var="getUrlException">
-                            <c:set var="currentImageURL" value="${imageNode.getUrl(['w:'.concat(width)])}"/>
-                        </c:catch>
-                        <c:if test="${getUrlException != null || empty currentImageURL}">
+                        <c:set var="currentImageURL" value="${imageNode.getUrl(['w:'.concat(width)])}"/>
+                        <c:if test="${empty currentImageURL}">
                             <c:set var="currentImageURL" value="${baseURL}"/>
                         </c:if>
                         <source media="${media[status.index].string}" srcset="${currentImageURL}">
@@ -68,10 +64,8 @@
         <c:otherwise>
             <c:set var="srcset" value=""/>
             <c:forEach items="${widths}" var="width">
-                <c:catch var="getUrlException">
-                    <c:set var="currentImageURL" value="${imageNode.getUrl(['w:'.concat(width)])}"/>
-                </c:catch>
-                <c:if test="${getUrlException == null && not empty currentImageURL && currentImageURL != baseURL}">
+                <c:set var="currentImageURL" value="${imageNode.getUrl(['w:'.concat(width)])}"/>
+                <c:if test="${not empty currentImageURL && currentImageURL != baseURL}">
                     <c:set var="srcset" value="${srcset}${empty srcset ? '' : ', '}${currentImageURL} ${width}w"/>
                 </c:if>
             </c:forEach>
