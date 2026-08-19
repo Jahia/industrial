@@ -30,6 +30,7 @@
  - defaultImageWidth (long)
  - imageWidths (long) multiple
  - imageMedia (string) multiple
+ - imageSizes (string)
 
 //*** CSS //
 [tint:css] > jnt:content, timix:industrial
