@@ -78,7 +78,7 @@
 [tint:image] > jnt:content, timix:industrial, timix:image
 
 [timix:content] mixin
- - image (weakreference, picker[type='image']) mandatory
+ - image (weakreference, picker[type='image']) mandatory < 'jmix:image'
  - body (string, richtext[ckeditor.toolbar='Tinny',ckeditor.customConfig='$context/modules/industrial/javascript/ckeditor/config/small.js']) internationalized
 
 [tint:heading] > jnt:content, timix:content, timix:industrial
