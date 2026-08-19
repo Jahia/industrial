@@ -13,3 +13,7 @@ target
 
 # Jahia DX Studio
 repository.xml.generated
+
+# Claude Code local config (contains machine-specific API token)
+.mcp.json
+.claude/settings.local.json
