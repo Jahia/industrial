@@ -88,7 +88,7 @@
                            data-toggle="list"
                            href="#relatedDoc-list-${status.index}"
                            role="tab"
-                           aria-controls="related document ${status.index}">
+                           aria-controls="relatedDoc-list-${status.index}">
                                 ${fn:escapeXml(title)}
                         </a>
                     </c:forEach>
@@ -115,5 +115,6 @@
                 </div>
             </div>
         </div>
-        </c:if>
+    </div>
+    </c:if>
 </section>
