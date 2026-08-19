@@ -2,63 +2,87 @@
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="utility" uri="http://www.jahia.org/tags/utilityLib" %>
-
-<c:set var="alt" value="${fn:escapeXml(currentNode.displayableName)}"/>
-<c:set var="widths" value="${not empty currentNode.properties['imageWidths'] ? currentNode.properties['imageWidths'] : fn:split('400,750', ',')}"/>
-<c:set var="media" value="${not empty currentNode.properties['imageMedia'] ? currentNode.properties['imageMedia'] : fn:split('(max-width: 768px),(min-width: 769px)', ',')}"/>
-<c:set var="width" value="${currentNode.properties['defaultImageWidth'].long}"/>
-
-<c:if test="${empty width}">
-    <c:set var="width" value="${not empty currentResource.moduleParams.mediaWidth ? currentResource.moduleParams.mediaWidth : '750'}"/>
-</c:if>
 
 <c:set var="imageNode" value="${currentNode.properties['image'].node}"/>
-<c:catch var ="getUrlException">
-    <c:set var="imageURL" value="${imageNode.getUrl(['width:'.concat(width)])}"/>
-</c:catch>
-<c:if test = "${getUrlException != null}">
-    <c:set var="imageURL" value="${imageNode.getUrl()}"/>
-</c:if>
+<c:if test="${not empty imageNode}">
+    <template:addCacheDependency node="${imageNode}"/>
+    <c:set var="alt" value="${fn:escapeXml(currentNode.displayableName)}"/>
+    <c:set var="baseURL" value="${imageNode.getUrl()}"/>
 
-<picture>
-    <c:forEach items="${widths}" var="width" varStatus="status">
-        <c:catch var ="getUrlException">
-            <c:set var="currentImageURL" value="${imageNode.getUrl(['width:'.concat(width)])}"/>
-        </c:catch>
-        <c:if test = "${getUrlException != null}">
-            <c:set var="currentImageURL" value="${imageNode.getUrl()}"/>
-        </c:if>
-
-        <source media="${media[status.index]}" srcset="${currentImageURL}">
+    <%-- Candidate widths: imageWidths property, else module defaults --%>
+    <c:set var="widthsCsv" value=""/>
+    <c:forEach items="${currentNode.properties['imageWidths']}" var="w" varStatus="status">
+        <c:set var="widthsCsv" value="${widthsCsv}${status.first ? '' : ','}${w.long}"/>
     </c:forEach>
-    <img width="100%"
-         src="${imageURL}"
-         class="${currentResource.moduleParams.class}"
-         alt="${alt}"
-    />
-</picture>
+    <c:if test="${empty widthsCsv}">
+        <c:set var="widthsCsv" value="400,750,1024,1920"/>
+    </c:if>
+    <c:set var="widths" value="${fn:split(widthsCsv, ',')}"/>
 
-<%--<c:set var="sizes" value="(min-width: 768px) 375px, 200px"/>--%>
-<%--<c:set var="sizes" value="(max-width: 768px) 100vw, 50vw"/>--%>
+    <%-- Fallback src width: defaultImageWidth property, else moduleParams, else 750 --%>
+    <c:set var="defaultWidth" value="${currentNode.properties['defaultImageWidth'].long}"/>
+    <c:if test="${empty defaultWidth}">
+        <c:set var="defaultWidth" value="${not empty currentResource.moduleParams.mediaWidth ? currentResource.moduleParams.mediaWidth : '750'}"/>
+    </c:if>
+    <c:catch var="getUrlException">
+        <c:set var="imageURL" value="${imageNode.getUrl(['w:'.concat(defaultWidth)])}"/>
+    </c:catch>
+    <c:if test="${getUrlException != null || empty imageURL}">
+        <c:set var="imageURL" value="${baseURL}"/>
+    </c:if>
 
-<%--<template:module node="${currentNode.properties['image'].node}" view="hidden.getURL" var="mediaURL" editable="false" templateType="txt">--%>
-<%--    <template:param name="width" value="${not empty currentResource.moduleParams.width ? currentResource.moduleParams.width : '750'}"/>--%>
-<%--    <template:param name="height" value="${currentResource.moduleParams.mediaHeight}"/>--%>
-<%--    <template:param name="scale" value="${currentResource.moduleParams.mediaScale}"/>--%>
-<%--    <template:param name="quality" value="${currentResource.moduleParams.mediaQuality}"/>--%>
-<%--</template:module>--%>
+    <c:set var="sizes" value="${not empty currentNode.properties['imageSizes'].string ? currentNode.properties['imageSizes'].string : currentResource.moduleParams.sizes}"/>
+    <c:if test="${empty sizes}">
+        <c:set var="sizes" value="100vw"/>
+    </c:if>
+    <c:set var="loading" value="${not empty currentResource.moduleParams.loading ? currentResource.moduleParams.loading : 'lazy'}"/>
 
-<%--<img width="100%"--%>
-<%--     srcset="<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">--%>
-<%--                <c:if test="${!status.first}">,</c:if>--%>
-<%--                <template:module node="${currentNode.properties['image'].node}" view="hidden.getURL" var="mediaURL" editable="false" templateType="txt">--%>
-<%--                    <template:param name="width" value="${width}"/>--%>
-<%--                </template:module>--%>
-<%--                 <c:out value="${mediaURL} ${width}w" />--%>
-<%--            </c:forEach>"--%>
-<%--     sizes="${sizes}"--%>
-<%--     src="${mediaURL}"--%>
-<%--     class="${currentResource.moduleParams.class}"--%>
-<%--     alt="${alt}"--%>
-<%--/>--%>
+    <c:set var="media" value="${currentNode.properties['imageMedia']}"/>
+    <c:choose>
+        <%-- Art direction: one <source> per media query, paired with the width at the same index --%>
+        <c:when test="${not empty media}">
+            <picture>
+                <c:forEach items="${widths}" var="width" varStatus="status">
+                    <c:if test="${not empty media[status.index]}">
+                        <c:catch var="getUrlException">
+                            <c:set var="currentImageURL" value="${imageNode.getUrl(['w:'.concat(width)])}"/>
+                        </c:catch>
+                        <c:if test="${getUrlException != null || empty currentImageURL}">
+                            <c:set var="currentImageURL" value="${baseURL}"/>
+                        </c:if>
+                        <source media="${media[status.index].string}" srcset="${currentImageURL}">
+                    </c:if>
+                </c:forEach>
+                <img width="100%"
+                     src="${imageURL}"
+                     class="${currentResource.moduleParams.class}"
+                     loading="${loading}"
+                     decoding="async"
+                     alt="${alt}"
+                />
+            </picture>
+        </c:when>
+        <%-- Resolution switching: one srcset candidate per width, browser picks via sizes.
+             Providers that don't support resize params return the plain URL: such
+             candidates are skipped so we never emit a srcset of identical URLs. --%>
+        <c:otherwise>
+            <c:set var="srcset" value=""/>
+            <c:forEach items="${widths}" var="width">
+                <c:catch var="getUrlException">
+                    <c:set var="currentImageURL" value="${imageNode.getUrl(['w:'.concat(width)])}"/>
+                </c:catch>
+                <c:if test="${getUrlException == null && not empty currentImageURL && currentImageURL != baseURL}">
+                    <c:set var="srcset" value="${srcset}${empty srcset ? '' : ', '}${currentImageURL} ${width}w"/>
+                </c:if>
+            </c:forEach>
+            <img width="100%"
+                 src="${imageURL}"
+                 <c:if test="${not empty srcset}">srcset="${srcset}" sizes="${sizes}"</c:if>
+                 class="${currentResource.moduleParams.class}"
+                 loading="${loading}"
+                 decoding="async"
+                 alt="${alt}"
+            />
+        </c:otherwise>
+    </c:choose>
+</c:if>
