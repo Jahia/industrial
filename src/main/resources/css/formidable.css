@@ -1,0 +1,578 @@
+/* Forms built with Formidable, in the industrial design (a Bootstrap 4 theme).
+   Formidable only ships functional rules (validation, step navigation, spinner, authoring cues)
+   and exposes every value it hard-codes as a variable; the site gives forms their look through
+   the stable class hooks documented in the module (docs/styling.md). The rules below restate
+   the theme's .form-control, .custom-select, .custom-control, .btn and .alert on those hooks,
+   with the theme's variables (--primary, --secondary, --text-primary). */
+
+.fmdb-form {
+  /* Formidable's variables, tuned to the theme */
+  --fmdb-validation-error-color: var(--danger);
+  --fmdb-invalid-border-color: var(--danger);
+  --fmdb-invalid-outline-color: var(--danger);
+  --fmdb-steps-nav-gap: 0.5rem;
+  --fmdb-steps-nav-mb: 2rem;
+  --fmdb-step-color: var(--secondary);
+  --fmdb-step-border: #dee2e6;
+  --fmdb-step-active-color: var(--text-primary);
+  --fmdb-step-active-border: var(--primary);
+  --fmdb-step-done-color: var(--text-primary);
+  --fmdb-step-done-border: var(--success);
+  --fmdb-step-number-bg: #e9ecef;
+  --fmdb-step-number-color: var(--text-primary);
+  --fmdb-step-active-number-bg: var(--primary);
+  --fmdb-step-active-number-color: #fff;
+  --fmdb-step-done-number-bg: var(--success);
+  --fmdb-step-done-number-color: #fff;
+  --fmdb-spinner-color: var(--primary);
+  --fmdb-spinner-track-color: #e9ecef;
+  --fmdb-spinner-text-color: var(--secondary);
+  --fmdb-spinner-overlay-radius: 0.25rem;
+  --fmdb-range-gap: 0.75rem;
+  /* Conditional fields in the Page Builder: keep Formidable's card, full width, in the theme */
+  --fmdb-logic-target-card-display: block;
+  --fmdb-logic-target-card-bg: var(--light);
+  --fmdb-logic-target-card-shadow: 0 0 0 6px var(--light);
+  --fmdb-logic-target-card-radius: 0.25rem;
+  /* Extended inputs (rating stars, scale and NPS chips): the module's own variables */
+  --fmdbext-rating-on: var(--primary);
+  --fmdbext-rating-off: #ced4da;
+  --fmdbext-rating-gap: 0.375rem;
+  --fmdbext-chip-border: #ced4da;
+  --fmdbext-chip-radius: 0.25rem;
+  --fmdbext-chip-bg: #fff;
+  --fmdbext-chip-on-bg: var(--primary);
+  --fmdbext-chip-on-fg: #fff;
+  --fmdbext-focus: var(--fmdb-industrial-control-focus-border);
+  --fmdbext-end-labels-color: var(--secondary);
+  /* Local tokens */
+  --fmdb-industrial-control-border: #ced4da;
+  --fmdb-industrial-control-focus-border: #ffae7e;
+  --fmdb-industrial-control-focus-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: "Oxygen", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Introduction, step intros and content blocks */
+.fmdb-form-intro,
+.fmdb-step-intro,
+.fmdb-content {
+  color: var(--secondary);
+}
+
+.fmdb-form-intro > :first-child,
+.fmdb-step-intro > :first-child,
+.fmdb-content > :first-child {
+  margin-top: 0;
+}
+
+.fmdb-form-intro > :last-child,
+.fmdb-step-intro > :last-child,
+.fmdb-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* One field: label, help, control */
+.fmdb-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.fmdb-form-label,
+.fmdb-file-label,
+.fmdb-group-legend {
+  display: inline-block;
+  margin: 0;
+  font-family: "Montserrat", "Oxygen", sans-serif;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  color: var(--head-color);
+}
+
+.fmdb-group-legend {
+  padding: 0;
+  width: auto;
+  margin-bottom: 0.25rem;
+}
+
+.fmdb-required-indicator {
+  margin-left: 0.2em;
+  color: var(--primary);
+}
+
+.fmdb-form-help,
+.fmdb-file-selection-note {
+  margin: -0.4rem 0 0;
+  font-size: 80%;
+  line-height: 1.35;
+  color: var(--secondary);
+}
+
+.fmdb-form-help > :first-child {
+  margin-top: 0;
+}
+
+.fmdb-form-help > :last-child {
+  margin-bottom: 0;
+}
+
+/* Text-like controls (.form-control) */
+.fmdb-form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font: inherit;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid var(--fmdb-industrial-control-border);
+  border-radius: 0.25rem;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.fmdb-form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: var(--fmdb-industrial-control-focus-border);
+  outline: 0;
+  box-shadow: var(--fmdb-industrial-control-focus-shadow);
+}
+
+.fmdb-form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.fmdb-form-control:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+textarea.fmdb-form-control {
+  min-height: calc(1.5em * 4 + 0.75rem + 2px);
+  resize: vertical;
+}
+
+/* Selects (.custom-select) */
+select.fmdb-form-control:not([multiple]) {
+  padding-right: 1.75rem;
+  appearance: none;
+  background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+  background-size: 8px 10px;
+}
+
+.fmdb-form-control[type="color"] {
+  width: 3rem;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.25rem;
+}
+
+.fmdb-form-control[type="color"]::-webkit-color-swatch,
+.fmdb-form-control[type="color"]::-moz-color-swatch {
+  border: 0;
+  border-radius: 0.125rem;
+}
+
+/* File input: the native button carries the primary button look */
+.fmdb-form-control[type="file"] {
+  padding: 0;
+  overflow: hidden;
+}
+
+.fmdb-form-control[type="file"]::file-selector-button {
+  margin: 0 0.75rem 0 0;
+  padding: 0.375rem 0.75rem;
+  font: inherit;
+  color: #fff;
+  background-color: var(--primary);
+  border: 0;
+  border-right: 1px solid var(--fmdb-industrial-control-border);
+  cursor: pointer;
+}
+
+.fmdb-file-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fmdb-selected-files {
+  margin-top: 0.25rem;
+}
+
+.fmdb-selected-files-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--head-color);
+}
+
+.fmdb-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fmdb-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--light);
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
+.fmdb-file-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.fmdb-file-name {
+  overflow-wrap: anywhere;
+}
+
+.fmdb-file-size {
+  font-size: 80%;
+  color: var(--secondary);
+}
+
+.fmdb-file-remove {
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  font-size: 80%;
+  color: var(--danger);
+  background: transparent;
+  border: 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.fmdb-file-remove:hover,
+.fmdb-file-remove:focus-visible {
+  background-color: #f8d7da;
+  outline: 0;
+}
+
+/* Checkboxes and radios (.custom-control colours on the native controls) */
+.fmdb-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fmdb-group-item,
+.fmdb-form-group:has(> .fmdb-form-control[type="checkbox"]) {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.fmdb-form-group:has(> .fmdb-form-control[type="checkbox"]) {
+  flex-wrap: wrap;
+}
+
+.fmdb-form-group:has(> .fmdb-form-control[type="checkbox"]) > .fmdb-form-help {
+  flex-basis: 100%;
+  margin-top: 0;
+  padding-left: calc(1rem + 0.5rem);
+}
+
+.fmdb-checkbox-label,
+.fmdb-radio-label {
+  margin: 0;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.fmdb-form-control[type="checkbox"],
+.fmdb-form-control[type="radio"] {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.25rem;
+  padding: 0;
+  appearance: none;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50% 50%;
+  border: 1px solid #adb5bd;
+  border-radius: 0.25rem;
+}
+
+.fmdb-form-control[type="radio"] {
+  border-radius: 50%;
+}
+
+.fmdb-form-control[type="checkbox"]:checked,
+.fmdb-form-control[type="radio"]:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.fmdb-form-control[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+}
+
+.fmdb-form-control[type="radio"]:checked {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+.fmdb-form-control[type="checkbox"]:focus,
+.fmdb-form-control[type="radio"]:focus {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+}
+
+/* Range slider */
+.fmdb-form-control[type="range"] {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  accent-color: var(--primary);
+}
+
+.fmdb-form-control[type="range"]:focus {
+  box-shadow: none;
+}
+
+.fmdb-form-control[type="range"]:focus-visible {
+  outline: 2px solid var(--fmdb-industrial-control-focus-border);
+  outline-offset: 2px;
+}
+
+.fmdb-range-end-label,
+.fmdb-range-output {
+  font-size: 80%;
+  color: var(--secondary);
+}
+
+.fmdb-range-output {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Scale and NPS chips: the module only recolours the border on hover; give the hover the theme's
+   outline-button feel, and keep the selected chip's look on hover so it stays readable */
+.fmdb-form .fmdbext-scale-label {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.fmdb-form .fmdbext-scale-label:hover {
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+
+.fmdb-form .fmdbext-scale-input:checked + .fmdbext-scale-label:hover {
+  background: var(--fmdbext-chip-on-bg);
+  color: var(--fmdbext-chip-on-fg);
+}
+
+.fmdb-form .fmdbext-rating-items[data-fmdbext-icon="number"] .fmdbext-rating-label {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Fieldsets and steps */
+.fmdb-fieldset {
+  margin: 0;
+  padding: 1.25rem 1.25rem 1.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  min-width: 0;
+}
+
+.fmdb-fieldset-legend {
+  width: auto;
+  padding: 0 0.5rem;
+  font-family: "Montserrat", "Oxygen", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--head-color);
+}
+
+.fmdb-fieldset-elements {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fmdb-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fmdb-step-title {
+  margin: 0;
+  font-family: "Montserrat", "Oxygen", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--head-color);
+}
+
+/* Buttons (.btn, .btn-primary, .btn-outline-secondary) */
+.fmdb-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fmdb-btn {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font: inherit;
+  font-family: "Montserrat", "Oxygen", sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--secondary);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid var(--secondary);
+  border-radius: 0.25rem;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.fmdb-btn:hover {
+  color: #fff;
+  background-color: var(--secondary);
+}
+
+.fmdb-btn:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(var(--secondary-rgb), 0.5);
+}
+
+.fmdb-btn:disabled {
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.fmdb-btn-primary {
+  color: #fff;
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.fmdb-btn-primary:hover {
+  color: #fff;
+  background-color: #d75100;
+  border-color: #ca4c00;
+}
+
+.fmdb-btn-primary:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.5);
+}
+
+.fmdb-btn-primary:disabled {
+  color: #fff;
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Submission feedback (.alert) */
+.fmdb-message {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-primary);
+  background-color: var(--light);
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
+.fmdb-message-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.fmdb-message-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.fmdb-message-maintenance {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+.fmdb-message-content > :first-child {
+  margin-top: 0;
+}
+
+.fmdb-message-content > :last-child {
+  margin-bottom: 0;
+}
+
+.fmdb-message .fmdb-btn {
+  margin-top: 1rem;
+}
+
+/* Inline errors that Formidable does not derive from a variable */
+.fmdb-field-error {
+  margin: 0;
+  font-size: 80%;
+  color: var(--danger);
+}
+
+/* A form opened on its own in the Page Builder: a column like the site's containers */
+.fmdb-visual-edit {
+  --fmdb-visual-edit-max-width: 52rem;
+  --fmdb-visual-edit-padding: 2rem 1rem 4rem;
+}
+
+.fmdb-visual-edit-title {
+  font-family: "Montserrat", "Oxygen", sans-serif;
+  font-weight: 700;
+  color: var(--head-color);
+}
+
+@media (min-width: 768px) {
+  .fmdb-form-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .fmdb-form-actions .fmdb-prev-btn {
+    margin-right: auto;
+  }
+}

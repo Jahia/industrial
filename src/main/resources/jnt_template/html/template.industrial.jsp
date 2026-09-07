@@ -62,6 +62,8 @@
 		<!-- Theme Style -->
 		<template:addResources type="css" resources="style.css" />
     	<template:addResources type="css" resources="style.patch.css" />
+		<%-- Forms built with Formidable, on the module's class hooks --%>
+    	<template:addResources type="css" resources="formidable.css" />
 
 <%--	  position is important to be sure custom css will not merged with ofthers and is loaded at the end --%>
 	  <template:addResources type="css" resources="ionicons.4.6.3.min.css" media="screen"/>
