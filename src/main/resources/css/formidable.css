@@ -4,15 +4,12 @@
    the stable class hooks documented in the module (docs/styling.md). The rules below restate
    the theme's .form-control, .custom-select, .custom-control, .btn and .alert on those hooks,
    with the theme's variables (--primary, --secondary, --text-primary).
-   Seventeen of the hooks below are not in that document yet. They exist in the module's source,
-   but a rename there would unstyle these forms with no error anywhere — and this repository has no
-   build to catch it. Check these first after a Formidable upgrade:
-     fmdb-file-info, fmdb-file-input-container, fmdb-file-item, fmdb-file-list, fmdb-file-name,
-     fmdb-file-remove, fmdb-file-selection-note, fmdb-file-size, fmdb-selected-files,
-     fmdb-selected-files-title (the file input, fmdb-file-label excepted);
-     fmdbext-rating-items, fmdbext-rating-label, fmdbext-scale-input, fmdbext-scale-label (the
-     extended inputs' classes; their variables are documented);
-     fmdb-content, fmdb-field-error, fmdb-fieldset-elements. */
+   Ten of the hooks below — fmdb-content, fmdb-field-error, fmdb-fieldset-elements, fmdb-file-info,
+   fmdb-selected-files, fmdb-selected-files-title, fmdbext-rating-items, fmdbext-rating-label,
+   fmdbext-scale-input, fmdbext-scale-label — entered Formidable's docs/styling.md only with
+   Jahia/formidable#303, and fmdb-visual-edit and fmdb-visual-edit-title come with
+   Jahia/formidable#297: on a Formidable older than those they are the module's internals, so check
+   them first after an upgrade — this repository has no build to catch a rename. */
 
 .fmdb-form {
   /* Formidable's variables, tuned to the theme */
