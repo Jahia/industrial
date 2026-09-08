@@ -3,7 +3,16 @@
    and exposes every value it hard-codes as a variable; the site gives forms their look through
    the stable class hooks documented in the module (docs/styling.md). The rules below restate
    the theme's .form-control, .custom-select, .custom-control, .btn and .alert on those hooks,
-   with the theme's variables (--primary, --secondary, --text-primary). */
+   with the theme's variables (--primary, --secondary, --text-primary).
+   Seventeen of the hooks below are not in that document yet. They exist in the module's source,
+   but a rename there would unstyle these forms with no error anywhere — and this repository has no
+   build to catch it. Check these first after a Formidable upgrade:
+     fmdb-file-info, fmdb-file-input-container, fmdb-file-item, fmdb-file-list, fmdb-file-name,
+     fmdb-file-remove, fmdb-file-selection-note, fmdb-file-size, fmdb-selected-files,
+     fmdb-selected-files-title (the file input, fmdb-file-label excepted);
+     fmdbext-rating-items, fmdbext-rating-label, fmdbext-scale-input, fmdbext-scale-label (the
+     extended inputs' classes; their variables are documented);
+     fmdb-content, fmdb-field-error, fmdb-fieldset-elements. */
 
 .fmdb-form {
   /* Formidable's variables, tuned to the theme */
@@ -553,7 +562,9 @@ select.fmdb-form-control:not([multiple]) {
   color: var(--danger);
 }
 
-/* A form opened on its own in the Page Builder: a column like the site's containers */
+/* A form opened on its own in the Page Builder: a column like the site's containers. The wrapper, the
+   title and their variables come with Formidable's visually-editable form (Jahia/formidable#297, not
+   released yet): until a Formidable carrying it is deployed, these two rules match nothing. */
 .fmdb-visual-edit {
   --fmdb-visual-edit-max-width: 52rem;
   --fmdb-visual-edit-padding: 2rem 1rem 4rem;
